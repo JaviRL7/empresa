@@ -10,6 +10,7 @@
     <?php
     $desde_codigo = (isset($_GET['desde_codigo'])) ? trim($_GET['desde_codigo']) : null;
     $hasta_codigo = (isset($_GET['hasta_codigo'])) ? trim($_GET['hasta_codigo']) : null;
+    $denominacion = (isset($_GET['denominacion'])) ? trim($_GET['denominacion']) : null;
     ?>
     <div>
         <form action="" method="get">
@@ -27,6 +28,12 @@
                         <input type="text" name="hasta_codigo" size="8" value="<?= $hasta_codigo ?>">
                     </label>
                 </p>
+                <p>
+                    <label>
+                        Denominación:
+                        <input type="text" name="denominacion" size="10" value="<?= $denominacion ?>">
+                    </label>
+                </p>
                 <button type="submit">Buscar</button>
             </fieldset>
         </form>
@@ -41,15 +48,15 @@
     $sent->execute([
         ':desde_codigo' => $desde_codigo,
         ':hasta_codigo' => $hasta_codigo,
-    ]);
+        ':denominacion' => $denominacion,
+        ]);
     $total = $sent->fetchColumn();
-    $sent = $pdo->prepare('SELECT *
-                             FROM departamentos
-                            WHERE codigo BETWEEN :desde_codigo AND :hasta_codigo
-                         ORDER BY codigo');
-    $sent->execute([
+        $sent = $pdo->prepare ('SELECT * FROM departamento WHERE denominacion = :denominacion');
+    
+        $sent->execute([
         ':desde_codigo' => $desde_codigo,
         ':hasta_codigo' => $hasta_codigo,
+        ':denominacion' => $denominacion,
     ]);
     $pdo->commit();
     ?>
